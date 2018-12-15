@@ -100,10 +100,30 @@ window.register_shape(pic_path)
 base.shape(pic_path)
 base.showturtle()
 
+base_health = 2000
+
+def game_over():
+    return base_health < 0
+
+
+def check_impact():
+    global base_health
+    for enemy_info in enemy_missiles:
+        if enemy_info['state'] != 'explode':
+            continue
+        enemy_missile = enemy_info['state']
+        if enemy_missile.distance(BASE_X, BASE_Y) < enemy_info['radius']*10:
+            base_health -= 100
+
+
+
 
 while True:
     window.update()
+    check_impact()
     move_missiles(missiles=our_missiles)
+    if game_over():
+        continue
     check_enemy_count()
     check_interceptions()
     move_missiles(missiles=enemy_missiles)
