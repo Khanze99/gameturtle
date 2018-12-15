@@ -90,6 +90,16 @@ def check_enemy_count():
     if len(enemy_missiles) < ENEMY_COUNT:
         fire_enemy_missile()
 
+base = turtle.Turtle()
+base.hideturtle()
+base.speed(0)
+base.penup()
+base.setpos(x=BASE_X, y=BASE_Y)
+pic_path = os.path.join(BASE_PATH, "image", "base.gif")
+window.register_shape(pic_path)
+base.shape(pic_path)
+base.showturtle()
+
 
 while True:
     window.update()
