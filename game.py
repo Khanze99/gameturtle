@@ -55,6 +55,12 @@ class Missile:
     def distance(self, x, y):
         return self.pen.distance(x=x, y=y)
 
+    def get_x(self):
+        return self.pen.xcor()
+
+    def get_y(self):
+        return self.pen.ycor()
+
 ENEMY_COUNT = 5
 
 BASE_X, BASE_Y = 0, -300
@@ -127,7 +133,7 @@ def check_interceptions():
         # our_missile = our_missile['missile']
         for enemy_missile in enemy_missiles:
             # enemy_missile = enemy_missile['missile']
-            if enemy_missile.distance(our_missile.pen.xcor(), our_missile.pen.ycor()) < our_missile.radius*10:
+            if enemy_missile.distance(our_missile.get_x(), our_missile.get_y()) < our_missile.radius*10:
                 enemy_missile.state = 'dead'
 
 def check_enemy_count():
