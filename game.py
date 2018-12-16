@@ -142,17 +142,26 @@ def check_enemy_count():
 
 
 
-base = turtle.Turtle()
-base.hideturtle()
-base.speed(0)
-base.penup()
-base.setpos(x=BASE_X, y=BASE_Y)
-pic_path = os.path.join(BASE_PATH, "image", "base.gif")
-window.register_shape(pic_path)
-base.shape(pic_path)
-base.showturtle()
+
+
+
+
+
 
 base_health = 2000
+
+def base_on_earth():
+    base = turtle.Turtle()
+    base.hideturtle()
+    base.speed(0)
+    base.penup()
+    base.setpos(x=BASE_X, y=BASE_Y)
+    pic_path = os.path.join(BASE_PATH, "image", "base.gif")
+    window.register_shape(pic_path)
+    base.shape(pic_path)
+    base.showturtle()
+
+base_on_earth()
 
 def game_over():
     return base_health < 0
