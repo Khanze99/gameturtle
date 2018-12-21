@@ -68,11 +68,15 @@ class Building:
 
     def __init__(self, x, y, name):
         self.name = name
+        self.x = x
+        self.y = y
+
+
         pen = turtle.Turtle()
         pen.hideturtle()
         pen.speed(0)
         pen.penup()
-        pen.setpos(x=x, y=y)
+        pen.setpos(x=self.x, y=self.y)
         pic_path = os.path.join(BASE_PATH, "image", self.get_pic_name())
         window.register_shape(pic_path)
         pen.shape(pic_path)
@@ -95,7 +99,8 @@ class Missile_Base(Building):
 def fire_enemy_missile():
     x = random.randint(-600, 600)
     y = 400
-    info = Missile(x=x, y=y, color='red', x2=BASE_X, y2=BASE_Y)
+    target = random.choice(buildings)
+    info = Missile(x=x, y=y, color='red', x2=target.x, y2=target.y)
     enemy_missiles.append(info)
 
 
@@ -164,8 +169,10 @@ def check_impact():
     for enemy_missile in enemy_missiles:
         if enemy_missile.state != 'explode':
             continue
-        if enemy_missile.distance(BASE_X, BASE_Y) < enemy_missile.radius*10:
-            base.health -= 100
+        for building in buildings:
+            if enemy_missile.distance(building.x, building.y) < enemy_missile.radius*10:
+                building.health -= 25
+                print(f"{building.name} - {building.health}")
 
 
 
