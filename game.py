@@ -3,15 +3,17 @@ import turtle
 import random
 import os
 
-
 BASE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 pict_path = os.path.join(BASE_PATH, "image", "background.png")
 
-window = turtle.Screen()
-window.bgpic(pict_path)
-window.setup(1200 + 3, 800 + 3)
-window.screensize(1200, 800)
-window.tracer(n=6)
+
+ENEMY_COUNT = 5
+
+BASE_X, BASE_Y = 0, -300
+BASE_ravel_x, BASE_ravel_y = random.randint(-400, 400), 300
+
+enemy_missiles = []
+our_missiles = []
 
 class Missile:
 
@@ -61,27 +63,33 @@ class Missile:
     def get_y(self):
         return self.pen.ycor()
 
-ENEMY_COUNT = 5
 
-BASE_X, BASE_Y = 0, -300
-BASE_ravel_x, BASE_ravel_y = random.randint(-400, 400), 300
+class Building:
 
-enemy_missiles = []
-our_missiles = []
+    def __init__(self, x, y, name):
+        self.name = name
+        pen = turtle.Turtle()
+        pen.hideturtle()
+        pen.speed(0)
+        pen.penup()
+        pen.setpos(x=x, y=y)
+        pic_path = os.path.join(BASE_PATH, "image", self.get_pic_name())
+        window.register_shape(pic_path)
+        pen.shape(pic_path)
+        pen.showturtle()
+        self.pen = pen
+        self.health = 2000
 
-# def create_missile(color, x, y, x2, y2):
-    # missile = turtle.Turtle()
-    # missile.speed(0)
-    # missile.color(color)
-    # missile.penup()
-    # missile.setpos(x=x, y=y)
-    # missile.pendown()
-    # heading = missile.towards(x2, y2)
-    # missile.setheading(heading)
-    # missile.showturtle()
-    # info = {'missile': missile, 'target': [x2, y2], 'state': 'launched', 'radius': 0}
-    # missile = Missile(x=x, y=y, color=color, x2=x2, y2=y2)
-    # return missile
+
+    def get_pic_name(self):
+
+        return f"{self.name}_1.gif"
+
+
+
+class Missile_Base(Building):
+    def get_pic_name(self):
+        return f"{self.name}.gif"
 
 
 def fire_enemy_missile():
@@ -99,40 +107,19 @@ def fire_missile(x, y):
 def move_missiles(missiles):
     for missile in missiles:
         missile.step()
-        # state = info['state']
-        # missile = info['missile']
-        # if state == 'launched':
-        #     missile.forward(4)
-        #     target = info['target']
-        #     if missile.distance(x=target[0], y=target[1]) < 20:
-        #         info['state'] = 'explode'
-        #         missile.shape('circle')
-        # elif state == 'explode':
-        #     info['radius'] += 1
-        #     if info["radius"] > 5:
-        #         missile.clear()
-        #         missile.hideturtle()
-        #         info["state"] = 'dead'
-        #     else:
-        #         missile.shapesize(info['radius'])
-        # elif state == 'dead':
-        #     missile.clear()
-        #     missile.hideturtle()
 
 
     dead_missiles = [missile for missile in missiles if missile.state == 'dead']
     for dead in dead_missiles:
         missiles.remove(dead)
 
-window.onclick(fire_missile)
+
 
 def check_interceptions():
     for our_missile in our_missiles:
         if our_missile.state != 'explode':
             continue
-        # our_missile = our_missile['missile']
         for enemy_missile in enemy_missiles:
-            # enemy_missile = enemy_missile['missile']
             if enemy_missile.distance(our_missile.x, our_missile.y) < our_missile.radius*10:
                 enemy_missile.state = 'dead'
 
@@ -145,36 +132,40 @@ def check_enemy_count():
 
 
 
+window = turtle.Screen()
+window.bgpic(pict_path)
+window.setup(1200 + 3, 800 + 3)
+window.screensize(1200, 800)
+window.tracer(n=6)
+window.onclick(fire_missile)
+
+buildings = []
+base = Missile_Base(x=BASE_X, y=BASE_Y, name="base")
+buildings.append(base)
+buiding_infos = {
+    'house': [BASE_X - 400, BASE_Y],
+    'kremlin': [BASE_X - 200, BASE_Y],
+    'nuclear': [BASE_X + 200, BASE_Y],
+    'skyscraper': [BASE_X + 400, BASE_Y] }
 
 
+for name, position in buiding_infos.items():
+    base = Building(x=position[0], y=position[1], name=name)
+    buildings.append(base)
 
-base_health = 2000
 
-def base_on_earth():
-    base = turtle.Turtle()
-    base.hideturtle()
-    base.speed(0)
-    base.penup()
-    base.setpos(x=BASE_X, y=BASE_Y)
-    pic_path = os.path.join(BASE_PATH, "image", "base.gif")
-    window.register_shape(pic_path)
-    base.shape(pic_path)
-    base.showturtle()
-
-base_on_earth()
 
 def game_over():
-    return base_health < 0
+    return base.health < 0
 
 
 def check_impact():
-    global base_health
+    base.health
     for enemy_missile in enemy_missiles:
         if enemy_missile.state != 'explode':
             continue
-        # enemy_missile = enemy_missile.state
         if enemy_missile.distance(BASE_X, BASE_Y) < enemy_missile.radius*10:
-            base_health -= 100
+            base.health -= 100
 
 
 
