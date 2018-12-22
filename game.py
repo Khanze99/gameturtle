@@ -1,4 +1,5 @@
 import math
+import time
 import turtle
 import random
 import os
@@ -111,6 +112,7 @@ class Building:
             return f"{self.name}_2.gif"
         return f"{self.name}_1.gif"
 
+
     def draw(self):
         pic_name = self.get_pic_name()
         pic_path = os.path.join(BASE_PATH, "image", pic_name)
@@ -121,6 +123,9 @@ class Building:
             self.label_health = self.health
             self.text_health.clear()
             self.text_health.write(str(self.label_health), align="center", font=["Arial", 10, "bold"])
+
+
+
 
     def is_alive(self):
         return self.health >= 0
@@ -222,6 +227,7 @@ def game():
 
 
 
+
     while True:
         window.update()
         if game_over():
@@ -232,6 +238,8 @@ def game():
         check_enemy_count()
         check_interceptions()
         move_missiles(missiles=enemy_missiles)
+        time.sleep(.01)
+
 
     pen = turtle.Turtle(visible=False)
     pen.speed(0)
