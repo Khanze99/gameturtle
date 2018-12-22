@@ -123,7 +123,7 @@ class Building:
             self.text_health.write(str(self.label_health), align="center", font=["Arial", 10, "bold"])
 
     def is_alive(self):
-        return self.health > 0
+        return self.health >= 0
 
 
 class Missile_Base(Building):
@@ -186,7 +186,7 @@ def game():
 
     global our_missiles, enemy_missiles, buildings, base
 
-
+    window.clear()
     window.bgpic(pict_path)
     window.setup(1200 + 3, 800 + 3)
     window.screensize(1200, 800)
@@ -236,10 +236,13 @@ def game():
     pen = turtle.Turtle(visible=False)
     pen.speed(0)
     pen.penup()
-    pen.color("white")
+    pen.color("#9370DB")
     pen.write('GAME OVER', align="center", font=["Arial", 20,"bold"])
 
 
 
 while True:
     game()
+    answer = window.textinput(title="Hello", prompt="You want play again? Y/N")
+    if answer.lower() not in ('y', 'yes', 'д', 'да'):
+        break
