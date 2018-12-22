@@ -101,6 +101,8 @@ class Building:
             self.pen.shape(pic_path)
             self.pen.showturtle()
 
+    def is_alive(self):
+        return self.health > 0
 
 
 class Missile_Base(Building):
@@ -119,9 +121,11 @@ class Missile_Base(Building):
 def fire_enemy_missile():
     x = random.randint(-600, 600)
     y = 400
-    target = random.choice(buildings)
-    info = Missile(x=x, y=y, color='red', x2=target.x, y2=target.y)
-    enemy_missiles.append(info)
+    alive_buildings = [b for b in buildings if b.is_alive()]
+    if alive_buildings:
+        target = random.choice(alive_buildings)
+        info = Missile(x=x, y=y, color='red', x2=target.x, y2=target.y)
+        enemy_missiles.append(info)
 
 
 def fire_missile(x, y):
