@@ -85,6 +85,15 @@ class Building:
         pen.showturtle()
         self.pen = pen
 
+        text_health = turtle.Turtle(visible=False)
+        text_health.speed(0)
+        text_health.penup()
+        text_health.color("purple")
+        text_health.setpos(x=self.x, y=self.y - 65)
+        text_health.write(str(self.health), align="center", font=["Arial", 10, "bold"])
+        self.text_health = text_health
+        self.label_health = self.health
+
 
     def get_pic_name(self):
         if self.health  < self.INITIAL_HEALTH * 0.2:
@@ -96,10 +105,13 @@ class Building:
     def draw(self):
         pic_name = self.get_pic_name()
         pic_path = os.path.join(BASE_PATH, "image", pic_name)
-        window.register_shape(pic_path)
         if self.pen.shape() != pic_path:
+            window.register_shape(pic_path)
             self.pen.shape(pic_path)
-            self.pen.showturtle()
+        if self.health != self.label_health:
+            self.label_health = self.health
+            self.text_health.clear()
+            self.text_health.write(str(self.label_health), align="center", font=["Arial", 10, "bold"])
 
     def is_alive(self):
         return self.health > 0
