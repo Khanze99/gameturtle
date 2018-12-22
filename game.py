@@ -108,7 +108,7 @@ class Missile_Base(Building):
 
     def get_pic_name(self):
         for missile in our_missiles:
-            if missile.distance(self.x, self.y) < 20:
+            if missile.distance(self.x, self.y) < 50:
                 pic_name = f"{self.name}_opened.gif"
                 break
         else:
@@ -125,7 +125,7 @@ def fire_enemy_missile():
 
 
 def fire_missile(x, y):
-    info = Missile(color='white', x=BASE_X, y=BASE_Y, x2=x, y2=y)
+    info = Missile(color='white', x=BASE_X, y=BASE_Y + 30, x2=x, y2=y)
     our_missiles.append(info)
 
 
