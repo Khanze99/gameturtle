@@ -123,6 +123,8 @@ class Building:
             self.label_health = self.health
             self.text_health.clear()
             self.text_health.write(str(self.label_health), align="center", font=["Arial", 10, "bold"])
+        if self.health < 0:
+            self.text_health.clear()
 
 
 
@@ -245,7 +247,7 @@ def game():
     pen.speed(0)
     pen.penup()
     pen.color("#9370DB")
-    pen.write('GAME OVER', align="center", font=["Arial", 20,"bold"])
+    pen.write('GAME OVER', align="center", font=["Arial", 20, "bold"])
 
 
 
