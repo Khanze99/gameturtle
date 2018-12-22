@@ -123,7 +123,7 @@ class Building:
             self.label_health = self.health
             self.text_health.clear()
             self.text_health.write(str(self.label_health), align="center", font=["Arial", 10, "bold"])
-        if self.health < 0:
+        if self.health < 25:
             self.text_health.clear()
 
 
